@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SBI Software — Software That Respects Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #1a3a2a;
+  --green-primary: #2d6a4f;
+  --green-light: #52b788;
+  --green-pale: #d8f3dc;
+  --green-glow: #95d5b2;
+  --cream: #f8f5f0;
+  --warm-white: #fefcf9;
+  --charcoal: #2b2b2b;
+  --text-dark: #1a1a1a;
+  --text-body: #3d3d3d;
+  --accent-orange: #e76f51;
+  --accent-gold: #dda15e;
+  --shadow-soft: 0 8px 40px rgba(26, 58, 42, 0.08);
+  --shadow-deep: 0 20px 60px rgba(26, 58, 42, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--warm-white);
+  color: var(--text-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── PROGRESS BAR ─── */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green-primary), var(--green-light), var(--accent-gold));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ─── SECTION BASE ─── */
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  scroll-snap-align: start;
+}
+
+/* ─── HERO ─── */
+.hero {
+  background: var(--green-deep);
+  color: white;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 0 40px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(82,183,136,0.15), transparent 70%);
+  top: -200px; right: -200px;
+  animation: floatOrb 20s ease-in-out infinite;
+}
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(221,161,94,0.1), transparent 70%);
+  bottom: -100px; left: -100px;
+  animation: floatOrb 15s ease-in-out infinite reverse;
+}
+@keyframes floatOrb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-40px)} }
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+}
+.hero-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: var(--green-light);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s forwards;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s forwards;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--green-light);
+}
+.hero-sub {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s forwards;
+}
+.hero-cta-group {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s forwards;
+}
+.btn-primary {
+  padding: 16px 36px;
+  background: var(--green-light);
+  color: var(--green-deep);
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.btn-primary:hover { background: white; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(82,183,136,0.3); }
+.btn-ghost {
+  padding: 16px 36px;
+  background: transparent;
+  color: white;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.btn-ghost:hover { border-color: white; background: rgba(255,255,255,0.08); }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+.scroll-hint .arrow { width: 1px; height: 30px; background: rgba(255,255,255,0.2); position: relative; }
+.scroll-hint .arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid rgba(255,255,255,0.4);
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  transform: rotate(45deg);
+}
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* ─── QUOTE SECTION ─── */
+.quote-section {
+  background: var(--green-deep);
+  color: white;
+  padding: 80px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.quote-section::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 40rem;
+  color: rgba(255,255,255,0.03);
+  top: -180px;
+  left: -40px;
+  line-height: 1;
+}
+.quote-inner {
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.quote-inner blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.5;
+  font-style: italic;
+}
+.quote-inner blockquote .highlight-listen {
+  color: var(--green-light);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--green-light);
+  text-underline-offset: 4px;
+}
+.quote-inner blockquote .highlight-sell {
+  color: var(--accent-orange);
+  font-weight: 700;
+  text-decoration: line-through;
+  text-decoration-color: var(--accent-orange);
+}
+
+/* ─── ABOUT ─── */
+.about {
+  background: var(--green-deep);
+  padding: 120px 40px;
+  min-height: auto;
+  color: white;
+}
+.about-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+}
+.about-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 24px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--green-light);
+  margin-bottom: 24px;
+}
+.about-badge .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+.about h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+.about p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16px;
+}
+.about-visual .visual-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  padding: 48px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.visual-card::after {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(82,183,136,0.2), transparent);
+  bottom: -50px; right: -50px;
+  border-radius: 50%;
+}
+.visual-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+}
+.visual-card p {
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+.visual-card .leaf-deco {
+  font-size: 4rem;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0.2;
+}
+
+/* ─── WHY SECTION ─── */
+.why {
+  background: var(--warm-white);
+  padding: 120px 40px;
+  min-height: auto;
+}
+.why-header {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 72px;
+}
+.section-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--green-light);
+  margin-bottom: 12px;
+}
+.why-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 900;
+  color: var(--green-deep);
+  line-height: 1.15;
+}
+.why-cards {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.why-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(0,0,0,0.04);
+}
+.why-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-deep);
+}
+.why-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green-primary), var(--green-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.why-card:hover::before { transform: scaleX(1); }
+.why-card .icon {
+  width: 56px; height: 56px;
+  background: var(--green-pale);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+}
+.why-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  margin-bottom: 12px;
+}
+.why-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-body);
+}
+
+/* ─── TOOLS SECTION ─── */
+.tools {
+  background: var(--green-deep);
+  color: white;
+  padding: 120px 40px;
+  min-height: auto;
+  position: relative;
+  overflow: hidden;
+}
+.tools::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 1;
+}
+.tools-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.tools-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.tools-header .big-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 8vw, 7rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--green-light), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.tools-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  margin-top: 8px;
+  color: rgba(255,255,255,0.8);
+}
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.tool-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 36px 32px;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+.tool-card:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(82,183,136,0.3);
+  transform: translateY(-4px);
+}
+.tool-card .tool-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  display: block;
+}
+.tool-card h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+  color: white;
+}
+.tool-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+}
+
+/* ─── JOURNEY SECTION ─── */
+.journey {
+  background: linear-gradient(180deg, var(--green-deep) 0%, #0f2b1d 100%);
+  padding: 120px 40px 140px;
+  min-height: auto;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+.journey::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(82,183,136,0.12), transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(221,161,94,0.08), transparent 50%);
+  pointer-events: none;
+}
+/* Floating particles */
+.journey-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatParticle linear infinite;
+}
+@keyframes floatParticle {
+  0% { opacity: 0; transform: translateY(100vh) scale(0); }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-20vh) scale(1); }
+}
+
+.journey-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.journey-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+.journey-header .section-label {
+  color: var(--accent-gold);
+}
+.journey-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.journey-header .journey-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ─── GROWING VINE CONNECTOR ─── */
+.journey-vine {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+.vine-track {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+.vine-line {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  transform: translateY(-50%);
+  overflow: hidden;
+}
+.vine-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--green-light), var(--accent-gold));
+  border-radius: 3px;
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 0 20px rgba(82,183,136,0.4);
+}
+.vine-dots {
+  position: absolute;
+  top: 50%;
+  left: 40px;
+  right: 40px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+}
+.vine-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.15);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 2;
+}
+.vine-dot.active {
+  background: var(--green-light);
+  border-color: var(--green-light);
+  box-shadow: 0 0 20px rgba(82,183,136,0.5), 0 0 40px rgba(82,183,136,0.2);
+  transform: scale(1.3);
+}
+.vine-dot.active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(82,183,136,0.3);
+  animation: dotPing 2s ease-out infinite;
+}
+@keyframes dotPing {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* ─── STEP CARDS (Horizontal) ─── */
+.journey-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.j-card {
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 24px;
+  padding: 36px 28px 32px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+}
+.j-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.j-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(82,183,136,0.08), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.j-card:hover::before,
+.j-card.active::before { opacity: 1; }
+.j-card:hover,
+.j-card.active {
+  border-color: rgba(82,183,136,0.3);
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.3),
+    0 0 40px rgba(82,183,136,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.j-card.active {
+  background: rgba(255,255,255,0.07);
+}
+
+/* Step number badge */
+.j-card-num {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  transition: color 0.4s ease;
+}
+.j-card.active .j-card-num,
+.j-card:hover .j-card-num {
+  color: rgba(82,183,136,0.12);
+}
+
+/* Icon container */
+.j-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+.j-card:nth-child(1) .j-card-icon { background: linear-gradient(135deg, rgba(82,183,136,0.15), rgba(82,183,136,0.05)); }
+.j-card:nth-child(2) .j-card-icon { background: linear-gradient(135deg, rgba(221,161,94,0.15), rgba(221,161,94,0.05)); }
+.j-card:nth-child(3) .j-card-icon { background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); }
+.j-card:nth-child(4) .j-card-icon { background: linear-gradient(135deg, rgba(149,213,178,0.15), rgba(149,213,178,0.05)); }
+
+.j-card:hover .j-card-icon,
+.j-card.active .j-card-icon {
+  transform: scale(1.08);
+}
+.j-card-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* Card content */
+.j-card-tag {
+  display: inline-block;
+  font-family: 'Caveat', cursive;
+  font-size: 0.9rem;
+  color: var(--green-light);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.4s ease 0.1s;
+}
+.j-card.active .j-card-tag,
+.j-card:hover .j-card-tag {
+  opacity: 1;
+  transform: translateY(0);
+}
+.j-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+.j-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+.j-card:hover p,
+.j-card.active p { color: rgba(255,255,255,0.75); }
+
+/* Bottom accent bar */
+.j-card-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 0 0 24px 24px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.j-card:nth-child(1) .j-card-accent { background: linear-gradient(90deg, var(--green-light), var(--green-glow)); }
+.j-card:nth-child(2) .j-card-accent { background: linear-gradient(90deg, var(--accent-gold), #e8c07a); }
+.j-card:nth-child(3) .j-card-accent { background: linear-gradient(90deg, var(--accent-orange), #f09c7f); }
+.j-card:nth-child(4) .j-card-accent { background: linear-gradient(90deg, var(--green-glow), var(--green-light)); }
+.j-card:hover .j-card-accent,
+.j-card.active .j-card-accent { transform: scaleX(1); }
+
+/* ─── GREENHOUSE ILLUSTRATION (bottom) ─── */
+.journey-greenhouse {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1200px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.06;
+}
+.journey-greenhouse svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── RESPONSIVE JOURNEY ─── */
+@media (max-width: 900px) {
+  .journey-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .vine-track { display: none; }
+  .journey-vine { display: none; }
+}
+@media (max-width: 560px) {
+  .journey-cards {
+    grid-template-columns: 1fr;
+  }
+  .journey { padding: 80px 20px 100px; }
+}
+
+/* ─── CTA FINALE ─── */
+.finale {
+  background: linear-gradient(135deg, var(--green-deep), #0f2b1d);
+  color: white;
+  text-align: center;
+  padding: 120px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.finale::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(82,183,136,0.15), transparent 60%);
+}
+.finale-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.finale .tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: var(--accent-gold);
+  margin-bottom: 20px;
+}
+.finale h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.finale h2 em {
+  font-style: italic;
+  color: var(--green-light);
+}
+.finale p {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.finale-cta {
+  display: inline-flex;
+  padding: 18px 48px;
+  background: var(--green-light);
+  color: var(--green-deep);
+  border: none;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.finale-cta:hover { background: white; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(82,183,136,0.3); }
+
+.footer-info {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+}
+.footer-info a {
+  color: var(--green-light);
+  text-decoration: none;
+}
+.footer-slogan {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .nav { padding: 16px 20px; }
+  .nav.scrolled { padding: 10px 20px; }
+  section { padding-left: 20px; padding-right: 20px; }
+  .hero { padding: 0 20px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .why-cards { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .hero-cta-group { flex-direction: column; align-items: center; }
+  .journey-steps::before { left: 22px; }
+  .step { gap: 20px; }
+  .step-num { width: 44px; height: 44px; min-width: 44px; font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Software that respects experience</div>
+    <h1>Best in Class ERP<br>Built For <em>Growers</em></h1>
+    <p class="hero-sub">From seed to sale, SBI Software brings every part of your operation together — inventory, production, online orders, and more. A powerful platform built specifically for growers.</p>
+    <div class="hero-cta-group">
+      <a href="https://www.sbigrower.com/connect" class="btn-primary" target="_blank">Book a Demo</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ═══════ QUOTE ═══════ -->
+<section class="quote-section">
+  <div class="quote-inner reveal">
+    <blockquote>
+      "We spent more time <span class="highlight-listen">listening</span> than <span class="highlight-sell">selling</span>. The result is a product shaped by growers, with proven workflows, &amp; real operational needs."
+    </blockquote>
+  </div>
+</section>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="about-badge">
+        <span class="num">25+</span>
+        Years Partnering with Growers
+      </div>
+      <h2>We Understand the Complexity of Growing</h2>
+      <p>For over 25 years, we've partnered with growers to help them reach their fullest potential. We understand the complexity of the plant and growing industry, which is why we continuously improve our platform to make daily operations more efficient, profitable, and easier to manage.</p>
+      <p>SBI Software is a leader in all-in-one grower management software built for greenhouses and nurseries. From production planning to cash collection — and every step in between — our platform supports your entire business with clarity and control.</p>
+    </div>
+    <div class="about-visual reveal">
+      <div class="visual-card">
+        <span class="leaf-deco">🌿</span>
+        <h3>Our Mission</h3>
+        <p>To deliver the best-in-class ERP platform built exclusively for the plant and growing industry. We combine deep industry expertise with leading-edge software to simplify operations, strengthen human connections, and help growers scale with confidence.</p>
+        <p style="margin-top:16px;">By partnering closely with the industry, we lead through innovation — empowering businesses to grow smarter, operate stronger, and build lasting success.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ WHY US ═══════ -->
+<section class="why">
+  <div>
+    <div class="why-header reveal">
+      <div class="section-label">Why growers choose us</div>
+      <h2>We're Here To Help You Grow</h2>
+    </div>
+    <div class="why-cards">
+      <div class="why-card reveal">
+        <div class="icon">⚡</div>
+        <h3>Boost Efficiency</h3>
+        <p>Running a business is hard enough without disconnected systems slowing you down. By bringing inventory, production, operations, payments, and reporting into one place, you reduce manual work, prevent costly errors, and gain real-time visibility.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="icon">🤝</div>
+        <h3>Tailored Support</h3>
+        <p>We take time to understand how you grow, ship, and sell, then shape workflows around how you actually operate. And when you need help, our dedicated team is right there with you, offering guidance you can trust when it matters most.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="icon">🌱</div>
+        <h3>Industry-Driven Innovation</h3>
+        <p>More than software, we're a trusted partner combining industry expertise with innovation to help growers scale confidently and grow smarter. We continuously improve our platform for the challenges you face every day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TOOLS ═══════ -->
+<section class="tools">
+  <div class="tools-inner">
+    <div class="tools-header reveal">
+      <div class="big-num">45+</div>
+      <h2>Tools Built for Your Operation</h2>
+    </div>
+    <div class="tools-grid">
+      <div class="tool-card reveal">
+        <span class="tool-icon">🌿</span>
+        <h3>Growing &amp; Inventory</h3>
+        <p>Total control through powerful office and mobile tools that keep operations lean, accurate, and your sales channels connected worldwide. When inventory slips, profits vanish — we make sure they don't.</p>
+      </div>
+      <div class="tool-card reveal">
+        <span class="tool-icon">📋</span>
+        <h3>Production Planning</h3>
+        <p>Plan production to the day plants are ready to ship — reducing delays, waste, and missed opportunities. Let the system handle the complexity so you can focus on growing with confidence.</p>
+      </div>
+      <div class="tool-card reveal">
+        <span class="tool-icon">📊</span>
+        <h3>Analytics &amp; Reporting</h3>
+        <p>High-powered analytics turn raw data into clear insights that drive smarter decisions and stronger margins across planning, production, inventory, sales, forecasting, and long-term growth.</p>
+      </div>
+      <div class="tool-card reveal">
+        <span class="tool-icon">📦</span>
+        <h3>Order Processing &amp; Shipping</h3>
+        <p>From creation to delivery — allocation, POS, replenishment, EDI, picking and racking, detailed load and route planning — all fully connected in one system built to scale with your operation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ JOURNEY ═══════ -->
+<section class="journey" id="journey">
+  <!-- Floating particles -->
+  <div class="journey-particles" id="journeyParticles"></div>
+
+  <div class="journey-inner">
+    <div class="journey-header reveal">
+      <div class="section-label">Your path forward</div>
+      <h2>How to Get Started</h2>
+      <p class="journey-sub">Four simple steps from first conversation to full operation. We walk with you the entire way.</p>
+    </div>
+
+    <!-- Animated vine connector -->
+    <div class="journey-vine">
+      <div class="vine-track">
+        <div class="vine-line">
+          <div class="vine-line-fill" id="vineFill"></div>
+        </div>
+        <div class="vine-dots">
+          <div class="vine-dot" data-step="0"></div>
+          <div class="vine-dot" data-step="1"></div>
+          <div class="vine-dot" data-step="2"></div>
+          <div class="vine-dot" data-step="3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step Cards -->
+    <div class="journey-cards" id="journeyCards">
+
+      <!-- Card 1 — Book a Demo -->
+      <div class="j-card" data-step="0">
+        <div class="j-card-num">01</div>
+        <div class="j-card-icon">
+          <svg viewBox="0 0 30 30" fill="none" stroke="#52b788" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="24" height="20" rx="3"/>
+            <path d="M3 10h24"/>
+            <circle cx="15" cy="18" r="2.5"/>
+            <path d="M15 15.5v-2"/>
+          </svg>
+        </div>
+        <div class="j-card-tag">Step one</div>
+        <h3>Book a Demo</h3>
+        <p>We'll show you how the platform works and — more importantly — how it fits your world. No scripts, no pressure, just a real conversation about your business.</p>
+        <div class="j-card-accent"></div>
+      </div>
+
+      <!-- Card 2 — Personalized Setup -->
+      <div class="j-card" data-step="1">
+        <div class="j-card-num">02</div>
+        <div class="j-card-icon">
+          <svg viewBox="0 0 30 30" fill="none" stroke="#dda15e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6z"/>
+          </svg>
+        </div>
+        <div class="j-card-tag">Step two</div>
+        <h3>Personalized Setup</h3>
+        <p>Every operation is different, and yours deserves more than a cookie-cutter solution. We'll configure everything around the way your team actually works.</p>
+        <div class="j-card-accent"></div>
+      </div>
+
+      <!-- Card 3 — Go Live -->
+      <div class="j-card" data-step="2">
+        <div class="j-card-num">03</div>
+        <div class="j-card-icon">
+          <svg viewBox="0 0 30 30" fill="none" stroke="#e76f51" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 27c0 0-1-3-1-8s4-7 4-12a6 6 0 10-12 0c0 5 4 7 4 12s-1 8-1 8"/>
+            <path d="M12 27h6"/>
+            <path d="M13 23c1-2 1-4 2-6"/>
+          </svg>
+        </div>
+        <div class="j-card-tag">Step three</div>
+        <h3>Go Live</h3>
+        <p>This is the exciting part. Your team gets real training from real people, so when launch day comes, everyone feels ready — not rushed.</p>
+        <div class="j-card-accent"></div>
+      </div>
+
+      <!-- Card 4 — Ongoing Support -->
+      <div class="j-card" data-step="3">
+        <div class="j-card-num">04</div>
+        <div class="j-card-icon">
+          <svg viewBox="0 0 30 30" fill="none" stroke="#95d5b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3v4"/>
+            <path d="M15 7c-4 0-8 4-8 9 0 3 1 5.5 3 7.5"/>
+            <path d="M15 7c4 0 8 4 8 9 0 3-1 5.5-3 7.5"/>
+            <path d="M10 23.5c1.5 1.2 3 2 5 2s3.5-.8 5-2"/>
+            <circle cx="15" cy="15" r="2"/>
+            <path d="M15 13v-3"/>
+            <path d="M17 15h3"/>
+          </svg>
+        </div>
+        <div class="j-card-tag">Always</div>
+        <h3>Ongoing Support</h3>
+        <p>As your business grows and changes, we're right here — answering questions, solving problems, and helping you get the most out of every tool.</p>
+        <div class="j-card-accent"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Subtle greenhouse silhouette at bottom -->
+  <div class="journey-greenhouse">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,120 L0,80 Q50,40 100,80 L100,60 Q150,20 200,60 L200,80 Q250,50 300,80 L300,70 Q350,30 400,70 L400,80 Q450,60 500,80 L500,50 Q550,10 600,50 L600,80 Q650,60 700,80 L700,70 Q750,35 800,70 L800,80 Q850,55 900,80 L900,60 Q950,25 1000,60 L1000,80 Q1050,50 1100,80 L1100,70 Q1150,40 1200,70 L1200,120 Z" fill="white"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════ FINALE CTA ═══════ -->
+<section class="finale">
+  <div class="finale-inner reveal">
+    <div class="tagline">Ready to simplify your operation?</div>
+    <h2>Let's Grow <em>Together</em></h2>
+    <p>Simplify your workflow, reduce waste, and sell faster with software designed to help you grow. Start with a real conversation — no pressure, no scripts.</p>
+    <a href="https://www.sbigrower.com/connect" class="finale-cta" target="_blank">Book Your Demo →</a>
+    <div class="footer-info">
+      <div>SBI Software · 2222 NE Oregon St UNIT 205, Portland, OR 97232</div>
+      <div><a href="/cdn-cgi/l/email-protection#6b180a070e182b1809021f0e0a0645080406"><span class="__cf_email__" data-cfemail="6615070a03152615040f1203070b4805090b">[email&#160;protected]</span></a> · YouTube @SBI_Software</div>
+      <div class="footer-slogan">Software that <strong>respects experience</strong></div>
+    </div>
+  </div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+});
+
+
+
+// Intersection Observer for reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ═══════ JOURNEY INTERACTIONS ═══════
+
+// Create floating particles
+(function createParticles() {
+  const container = document.getElementById('journeyParticles');
+  if (!container) return;
+  const colors = ['rgba(82,183,136,0.3)', 'rgba(221,161,94,0.2)', 'rgba(149,213,178,0.25)'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}%;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      animation-duration: ${Math.random() * 12 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// Journey cards staggered entrance
+const journeyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const cards = entry.target.querySelectorAll('.j-card');
+      cards.forEach((card, i) => {
+        setTimeout(() => {
+          card.classList.add('visible');
+        }, i * 180);
+      });
+      // Animate vine after cards appear
+      setTimeout(() => animateVine(), 200);
+      journeyObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+const journeyCards = document.getElementById('journeyCards');
+if (journeyCards) journeyObserver.observe(journeyCards);
+
+// Vine animation
+let currentStep = -1;
+function animateVine() {
+  const dots = document.querySelectorAll('.vine-dot');
+  const fill = document.getElementById('vineFill');
+  let step = 0;
+  const interval = setInterval(() => {
+    if (step >= 4) {
+      clearInterval(interval);
+      // After full animation, start hover interactions
+      enableCardHover();
+      return;
+    }
+    dots[step].classList.add('active');
+    fill.style.width = ((step + 1) / 4 * 100) + '%';
+    currentStep = step;
+    step++;
+  }, 400);
+}
+
+// Card hover → updates vine dots
+function enableCardHover() {
+  const cards = document.querySelectorAll('.j-card');
+  const dots = document.querySelectorAll('.vine-dot');
+  const fill = document.getElementById('vineFill');
+
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const step = parseInt(card.dataset.step);
+      cards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i <= step);
+      });
+      fill.style.width = ((step + 1) / 4 * 100) + '%';
+    });
+    car
